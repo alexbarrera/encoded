@@ -696,10 +696,13 @@ def main():
         print(f'\nDry Run')
         print(f'run_args dict keys: {run_args.keys()}')
         print(f'\nRun Variables.  In /etc/environment on instance')
+        run_vars = {}
         for line in run_args['user_data'].split('\n'):
             line = line.strip()
             if line[:5] == 'ENCD_':
-                print(line)
+                key_val = line.split('=')
+                run_vars[key_val[0]] = key_val[1]
+                print(f"{key_val[0]}={run_vars[key_val[0]]}")
         print('\ninstances_tag_data', instances_tag_data)
         print('\nis_tag:', is_tag, ', is_branch:', is_branch)
         print('\nInstance Tags:')
@@ -715,6 +718,21 @@ def main():
         )
         for key, val in tags_dict.items():
             print(f"{key:28}:'{val}'")
+        PG_URI='postgresql:///encoded'
+        if run_vars['ENCD_BUILD_TYPE'] == 'app' or run_vars['ENCD_BUILD_TYPE'] == 'app-es':
+            PG_URI="postgresql://run_vars['ENCD_PG_IP']/encoded"
+        bin_build_cmd= "bin/buildout -c {ENCD_ROLE}.cfg buildout:es-ip={ENCD_ES_IP} buildout:es-port={ENCD_ES_PORT} buildout:pg-uri={PG_URI} buildout:fe-ip={ENCD_FE_IP} buildout:remote_indexing={ENCD_REMOTE_INDEXING} buildout:index_procs={ENCD_INDEX_PROCS} buildout:index_chunk_size={ENCD_INDEX_CHUNK_SIZE}".format(
+            ENCD_HOME=run_vars['ENCD_HOME'],
+            ENCD_ROLE=run_vars['ENCD_ROLE'],
+            ENCD_ES_IP=run_vars['ENCD_ES_IP'],
+            ENCD_ES_PORT=run_vars['ENCD_ES_PORT'],
+            PG_URI=PG_URI,
+            ENCD_FE_IP=run_vars['ENCD_FE_IP'],
+            ENCD_REMOTE_INDEXING=run_vars['ENCD_REMOTE_INDEXING'],
+            ENCD_INDEX_PROCS=run_vars['ENCD_INDEX_PROCS'],
+            ENCD_INDEX_CHUNK_SIZE=run_vars['ENCD_INDEX_CHUNK_SIZE'],
+        )
+        print(f"app-encd buildout command: {bin_build_cmd}")
         print('Dry Run')
         sys.exit(0)
     # AWS - Below

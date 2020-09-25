@@ -57,7 +57,7 @@ commands:
             sudo pip3 install --upgrade pip setuptools
             sudo pip3 install zc.buildout
             buildout bootstrap
-            bin/buildout
+            bin/buildout -c development.cfg
 jobs:
   bdd:
     executor: encoded-executor
