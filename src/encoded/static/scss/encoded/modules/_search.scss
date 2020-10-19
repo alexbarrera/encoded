@@ -438,3 +438,25 @@ $form-bg: #f3f3f3;
 .result-experiment-series-search {
     margin-bottom: 2px;
 }
+
+
+.series-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.series-button {
+    flex: 0 1 300px;
+    padding: 10px 20px;
+    margin: 5px;
+    border-radius: 3px;
+    font-size: 18px;
+    background: #D5DDEC;
+    border: 2px solid #d2d2d2;
+
+    &.selected {
+        border: 2px solid #354b77;
+        background: #6481B9;
+        color: white;
+    }
+}
