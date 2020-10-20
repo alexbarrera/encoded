@@ -53,7 +53,7 @@ const SeriesSearch = (props, context) => {
     // const facetdisplay = context.facets && context.facets.some(facet => facet.total > 0);
 
     const handleClick = React.useCallback((series) => {
-        const seriesHref = `/search/?type=${series}`;
+        const seriesHref = `/search/?type=${series}&limit=all`;
         getSeriesData(seriesHref, context.fetch).then((response) => {
         //     // Find the response line that matches the search
             setSeries(series);
