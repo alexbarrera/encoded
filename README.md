@@ -23,24 +23,23 @@ For issues see [Snovault OSX App Installation][] first.
     ```
     # Make sure you are in the encoded-venv
     $ cd encoded
-    $ pip install -r requirements.osx.txt
     ```
 
 1. Build Application
     ```
-    $ make clean && buildout bootstrap && bin/buildout
+    $ make clean && pip install -e ".[dev]" && buildout
     ```
 
-1. Run Application
+2. Run Application
     ```
-    $ bin/dev-servers development.ini --app-name app --clear --init --load
+    $ dev-servers development.ini --app-name app --clear --init --load
     # In a separate terminal, make sure you are in the encoded-venv
-    $ bin/pserve development.ini
+    $ pserve development.ini
     ```
 
-1. Browse to the interface at http://localhost:6543
+3. Browse to the interface at http://localhost:6543
 
-1. Run Tests
+4. Run Tests
     ```
     # Make sure you are in the encoded-venv
     $ ./circle-tests.sh bdd
