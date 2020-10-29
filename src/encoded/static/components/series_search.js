@@ -29,6 +29,14 @@ const seriesList = {
     ReplicationTimingSeries: 'Replication timing series',
 };
 
+function nearestAncestorHref(node) {
+    let nodeVar = node;
+    while (nodeVar && !nodeVar.href) {
+        nodeVar = nodeVar.parentNode;
+    }
+    return nodeVar && nodeVar.href;
+}
+
 // Fetch gene coordinate file
 function getSeriesData(seriesLink, fetch) {
     return fetch(seriesLink, {
@@ -53,7 +61,7 @@ const SeriesSearch = (props, context) => {
     // const facetdisplay = context.facets && context.facets.some(facet => facet.total > 0);
 
     const handleClick = React.useCallback((series) => {
-        const seriesHref = `/search/?type=${series}&limit=all`;
+        const seriesHref = `/search/?type=${series}`;
         getSeriesData(seriesHref, context.fetch).then((response) => {
         //     // Find the response line that matches the search
             setSeries(series);
@@ -69,6 +77,19 @@ const SeriesSearch = (props, context) => {
             };
         }
         return SeriesSearch.lastRegion;
+    };
+
+    const handleLinks = (e) => {
+        const clickedUrl = nearestAncestorHref(e.target);
+        if (clickedUrl) {
+            const parsedUrl = url.parse(clickedUrl);
+            e.preventDefault();
+            const seriesHref = parsedUrl.path.replace('series-search', 'search');
+            getSeriesData(seriesHref, context.fetch).then((response) => {
+                // Find the response line that matches the search
+                setSeriesData(response);
+            });
+        }
     };
 
     // Check to see if device is mobile (small width with touch screen)
@@ -94,13 +115,18 @@ const SeriesSearch = (props, context) => {
                             </button>
                         ))}
                     </div>
-                    <Panel>
-                        <PanelBody>
-                            {seriesData ?
-                                <ResultTable context={seriesData} searchBase={searchBase} onChange={context.navigate} currentRegion={currentRegion} />
-                            : null}
-                        </PanelBody>
-                    </Panel>
+                    <div
+                        className="series-wrapper"
+                        onClick={(e) => handleLinks(e)}
+                    >
+                        <Panel>
+                            <PanelBody>
+                                {seriesData ?
+                                    <ResultTable context={seriesData} searchBase={searchBase} onChange={context.navigate} currentRegion={currentRegion} />
+                                : null}
+                            </PanelBody>
+                        </Panel>
+                    </div>
                 </div>
             </div>
         </div>
