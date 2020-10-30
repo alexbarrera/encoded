@@ -6,27 +6,39 @@ import { ResultTable } from './search';
 import * as globals from './globals';
 
 // Should really be singular...
-const types = {
-    matched_set: { title: 'Matched set series' },
-    aggregate_series: { title: 'Aggregate series' },
-    functional_characterization_series: { title: 'Functional characterization series' },
-    single_cell_rna_series: { title: 'Single cell RNA series' },
-    organism_development_series: { title: 'Organism development series' },
-    reference_epigenome: { title: 'Reference epigenome series' },
-    replication_timing_series: { title: 'Replication timing series' },
-    treatment_concentration_series: { title: 'Treatment concentration series' },
-    treatment_time_series: { title: 'Treatment time series' },
-    gene_silencing_series: { title: 'Gene silencing series' },
-};
-
 const seriesList = {
-    OrganismDevelopmentSeries: 'Organism development series',
-    TreatmentTimeSeries: 'Treatment time series',
-    MatchedSet: 'Matched set series',
-    ReferenceEpigenome: 'Reference epigenome series',
-    TreatmentConcentrationSeries: 'Treatment concentration series',
-    AggregateSeries: 'Aggregate series',
-    ReplicationTimingSeries: 'Replication timing series',
+    OrganismDevelopmentSeries: {
+        title: 'Organism development series',
+        description: 'Model organisms are essential experimental platforms for discovering gene functions, defining protein and genetic networks, uncovering functional consequences of human genome variation, and for modeling human disease.',
+    },
+    TreatmentTimeSeries: {
+        title: 'Treatment time series',
+        description: 'Model organisms are essential experimental platforms for discovering gene functions, defining protein and genetic networks, uncovering functional consequences of human genome variation, and for modeling human disease.',
+    },
+    MatchedSet: {
+        title: 'Matched set series',
+        description: 'Model organisms are essential experimental platforms for discovering gene functions, defining protein and genetic networks, uncovering functional consequences of human genome variation, and for modeling human disease.',
+    },
+    ReferenceEpigenome: {
+        title: 'Reference epigenome series',
+        description: 'Model organisms are essential experimental platforms for discovering gene functions, defining protein and genetic networks, uncovering functional consequences of human genome variation, and for modeling human disease.',
+    },
+    TreatmentConcentrationSeries: {
+        title: 'Treatment concentration series',
+        description: 'Model organisms are essential experimental platforms for discovering gene functions, defining protein and genetic networks, uncovering functional consequences of human genome variation, and for modeling human disease.',
+    },
+    AggregateSeries: {
+        title: 'Aggregate series',
+        description: 'Model organisms are essential experimental platforms for discovering gene functions, defining protein and genetic networks, uncovering functional consequences of human genome variation, and for modeling human disease.',
+    },
+    ReplicationTimingSeries: {
+        title: 'Replication timing series',
+        description: 'Model organisms are essential experimental platforms for discovering gene functions, defining protein and genetic networks, uncovering functional consequences of human genome variation, and for modeling human disease.',
+    },
+    functional_characterization_series: {
+        title: 'Functional characterization series',
+        description: 'Model organisms are essential experimental platforms for discovering gene functions, defining protein and genetic networks, uncovering functional consequences of human genome variation, and for modeling human disease.',
+    },
 };
 
 function nearestAncestorHref(node) {
@@ -63,7 +75,7 @@ const SeriesSearch = (props, context) => {
     const handleClick = React.useCallback((series) => {
         const seriesHref = `/search/?type=${series}`;
         getSeriesData(seriesHref, context.fetch).then((response) => {
-        //     // Find the response line that matches the search
+            // Find the response line that matches the search
             setSeries(series);
             setSeriesData(response);
         });
@@ -81,7 +93,7 @@ const SeriesSearch = (props, context) => {
 
     const handleLinks = (e) => {
         const clickedUrl = nearestAncestorHref(e.target);
-        if (clickedUrl) {
+        if (clickedUrl && (clickedUrl.indexOf('search') > -1)) {
             const parsedUrl = url.parse(clickedUrl);
             e.preventDefault();
             const seriesHref = parsedUrl.path.replace('series-search', 'search');
@@ -111,7 +123,8 @@ const SeriesSearch = (props, context) => {
                                 className={`series-button${selectedSeries === s ? ' selected' : ''}`}
                                 onClick={() => handleClick(s)}
                             >
-                                {seriesList[s]}
+                                <h4>{seriesList[s].title}</h4>
+                                <div>{seriesList[s].description}</div>
                             </button>
                         ))}
                     </div>
