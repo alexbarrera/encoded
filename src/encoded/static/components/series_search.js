@@ -8,35 +8,23 @@ import * as globals from './globals';
 // Should really be singular...
 const seriesList = {
     OrganismDevelopmentSeries: {
-        title: 'Organism development series',
+        title: 'Organism development',
         description: 'Model organisms are essential experimental platforms for discovering gene functions, defining protein and genetic networks, uncovering functional consequences of human genome variation, and for modeling human disease.',
     },
     TreatmentTimeSeries: {
-        title: 'Treatment time series',
+        title: 'Treatment time',
         description: 'Model organisms are essential experimental platforms for discovering gene functions, defining protein and genetic networks, uncovering functional consequences of human genome variation, and for modeling human disease.',
     },
-    MatchedSet: {
-        title: 'Matched set series',
-        description: 'Model organisms are essential experimental platforms for discovering gene functions, defining protein and genetic networks, uncovering functional consequences of human genome variation, and for modeling human disease.',
-    },
-    ReferenceEpigenome: {
-        title: 'Reference epigenome series',
+    GeneSilencingSeries: {
+        title: 'Gene silencing',
         description: 'Model organisms are essential experimental platforms for discovering gene functions, defining protein and genetic networks, uncovering functional consequences of human genome variation, and for modeling human disease.',
     },
     TreatmentConcentrationSeries: {
-        title: 'Treatment concentration series',
-        description: 'Model organisms are essential experimental platforms for discovering gene functions, defining protein and genetic networks, uncovering functional consequences of human genome variation, and for modeling human disease.',
-    },
-    AggregateSeries: {
-        title: 'Aggregate series',
+        title: 'Treatment concentration',
         description: 'Model organisms are essential experimental platforms for discovering gene functions, defining protein and genetic networks, uncovering functional consequences of human genome variation, and for modeling human disease.',
     },
     ReplicationTimingSeries: {
-        title: 'Replication timing series',
-        description: 'Model organisms are essential experimental platforms for discovering gene functions, defining protein and genetic networks, uncovering functional consequences of human genome variation, and for modeling human disease.',
-    },
-    functional_characterization_series: {
-        title: 'Functional characterization series',
+        title: 'Replication timing',
         description: 'Model organisms are essential experimental platforms for discovering gene functions, defining protein and genetic networks, uncovering functional consequences of human genome variation, and for modeling human disease.',
     },
 };
@@ -114,7 +102,7 @@ const SeriesSearch = (props, context) => {
             <div className="layout__block layout__block--100">
                 <div className="ricktextblock block" data-pos="0,0,0">
                     <center>
-                        <h1>{props.context.title}</h1>
+                        <h1>Functional genomics series</h1>
                     </center>
                     <div className="series-container">
                         {Object.keys(seriesList).map(s => (
@@ -123,11 +111,12 @@ const SeriesSearch = (props, context) => {
                                 className={`series-button${selectedSeries === s ? ' selected' : ''}`}
                                 onClick={() => handleClick(s)}
                             >
-                                <h4>{seriesList[s].title}</h4>
-                                <div>{seriesList[s].description}</div>
+                                {seriesList[s].title}
                             </button>
                         ))}
                     </div>
+                    <h2>{seriesList[selectedSeries].title}</h2>
+                    <div>{seriesList[selectedSeries].description}</div>
                     <div
                         className="series-wrapper"
                         onClick={(e) => handleLinks(e)}
@@ -135,7 +124,13 @@ const SeriesSearch = (props, context) => {
                         <Panel>
                             <PanelBody>
                                 {seriesData ?
-                                    <ResultTable context={seriesData} searchBase={searchBase} onChange={context.navigate} currentRegion={currentRegion} />
+                                    <ResultTable
+                                        context={seriesData}
+                                        searchBase={searchBase}
+                                        onChange={context.navigate}
+                                        currentRegion={currentRegion}
+                                        seriesFlag
+                                    />
                                 : null}
                             </PanelBody>
                         </Panel>
